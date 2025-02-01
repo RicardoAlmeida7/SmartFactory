@@ -1,0 +1,6 @@
+@SmartFactoryApi_HostAddress = http://localhost:5169
+
+GET {{SmartFactoryApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
