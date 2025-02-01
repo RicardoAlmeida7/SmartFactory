@@ -3,7 +3,29 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.12.35707.178 d17.12
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartFactory", "SmartFactory\SmartFactory.csproj", "{C825B0CA-887B-4DD3-9098-8964CCD845DF}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Api", "Api", "{BCCD359D-FAF6-4C9C-9AC6-9B24A5600EB9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Application", "Application", "{FC8F7F18-C420-4724-8217-161AB380EF7F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Domain", "Domain", "{C3928B1F-2BCD-48F5-A734-3DA944ADE41D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{72E91135-8CEE-4977-9589-4846D10308F3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{77028225-DA91-4B38-BC98-3C0F18CDFD51}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{27F8B7CC-B8C0-412D-AE68-1E0A9C96A711}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartFactoryInfrastructure", "SmartFactoryInfrastructure\SmartFactoryInfrastructure.csproj", "{1D45141F-839E-44E2-A617-5DFEE3B31438}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartFactoryDomain", "SmartFactoryDomain\SmartFactoryDomain.csproj", "{93FE50FF-EFBB-44B8-9DA5-C28E5A87426A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartFactoryCore", "SmartFactoryCore\SmartFactoryCore.csproj", "{B41841DF-73CF-4573-ABA8-C6550E94CDF7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartFactoryApplication", "SmartFactoryApplication\SmartFactoryApplication.csproj", "{2CBA42E5-C58B-4FC0-88D9-0BF77FBCB6BB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartFactoryApi", "SmartFactoryApi\SmartFactoryApi.csproj", "{6EB32772-294E-4130-9EB2-CFECB9CD459A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartFactoryTests", "SmartFactoryTests\SmartFactoryTests.csproj", "{F5D9D4BC-9AB6-4543-9C05-53214E49C8A7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,12 +33,40 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{C825B0CA-887B-4DD3-9098-8964CCD845DF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C825B0CA-887B-4DD3-9098-8964CCD845DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C825B0CA-887B-4DD3-9098-8964CCD845DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C825B0CA-887B-4DD3-9098-8964CCD845DF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1D45141F-839E-44E2-A617-5DFEE3B31438}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1D45141F-839E-44E2-A617-5DFEE3B31438}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1D45141F-839E-44E2-A617-5DFEE3B31438}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1D45141F-839E-44E2-A617-5DFEE3B31438}.Release|Any CPU.Build.0 = Release|Any CPU
+		{93FE50FF-EFBB-44B8-9DA5-C28E5A87426A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{93FE50FF-EFBB-44B8-9DA5-C28E5A87426A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{93FE50FF-EFBB-44B8-9DA5-C28E5A87426A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{93FE50FF-EFBB-44B8-9DA5-C28E5A87426A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B41841DF-73CF-4573-ABA8-C6550E94CDF7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B41841DF-73CF-4573-ABA8-C6550E94CDF7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B41841DF-73CF-4573-ABA8-C6550E94CDF7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B41841DF-73CF-4573-ABA8-C6550E94CDF7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2CBA42E5-C58B-4FC0-88D9-0BF77FBCB6BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2CBA42E5-C58B-4FC0-88D9-0BF77FBCB6BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2CBA42E5-C58B-4FC0-88D9-0BF77FBCB6BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2CBA42E5-C58B-4FC0-88D9-0BF77FBCB6BB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6EB32772-294E-4130-9EB2-CFECB9CD459A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6EB32772-294E-4130-9EB2-CFECB9CD459A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6EB32772-294E-4130-9EB2-CFECB9CD459A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6EB32772-294E-4130-9EB2-CFECB9CD459A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F5D9D4BC-9AB6-4543-9C05-53214E49C8A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F5D9D4BC-9AB6-4543-9C05-53214E49C8A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F5D9D4BC-9AB6-4543-9C05-53214E49C8A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F5D9D4BC-9AB6-4543-9C05-53214E49C8A7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{1D45141F-839E-44E2-A617-5DFEE3B31438} = {72E91135-8CEE-4977-9589-4846D10308F3}
+		{93FE50FF-EFBB-44B8-9DA5-C28E5A87426A} = {C3928B1F-2BCD-48F5-A734-3DA944ADE41D}
+		{B41841DF-73CF-4573-ABA8-C6550E94CDF7} = {77028225-DA91-4B38-BC98-3C0F18CDFD51}
+		{2CBA42E5-C58B-4FC0-88D9-0BF77FBCB6BB} = {FC8F7F18-C420-4724-8217-161AB380EF7F}
+		{6EB32772-294E-4130-9EB2-CFECB9CD459A} = {BCCD359D-FAF6-4C9C-9AC6-9B24A5600EB9}
+		{F5D9D4BC-9AB6-4543-9C05-53214E49C8A7} = {27F8B7CC-B8C0-412D-AE68-1E0A9C96A711}
 	EndGlobalSection
 EndGlobal

@@ -1,4 +1,4 @@
-﻿namespace SmartFactoryDomain.Entities
+﻿namespace SmartFactoryDomain.Entities.Inventory
 {
     public class ProductMaterial(int productId, int materialId, int quantity)
     {

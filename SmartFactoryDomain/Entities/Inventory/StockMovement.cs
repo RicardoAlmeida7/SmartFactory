@@ -1,6 +1,6 @@
 ﻿using SmartFactoryDomain.Enums;
 
-namespace SmartFactoryDomain.Entities
+namespace SmartFactoryDomain.Entities.Inventory
 {
     public class StockMovement(int materialId, int quantity, MovementType type, string description)
     {
@@ -12,5 +12,4 @@ namespace SmartFactoryDomain.Entities
         public MovementType Type { get; set; } = type;
         public string Description { get; set; } = description;
     }
-
 }

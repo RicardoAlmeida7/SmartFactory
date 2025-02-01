@@ -1,13 +1,13 @@
-﻿namespace SmartFactoryDomain.Entities
+﻿namespace SmartFactoryDomain.Entities.Inventory
 {
-    public class Material(string name, string code, decimal unitPrice, int stockQuantity, string unitOfMeasure)
+    public class Product(string name, string code, string category, decimal price, int stockQuantity)
     {
         public int Id { get; set; }
         public string Name { get; set; } = name;
         public string Code { get; set; } = code;
-        public decimal UnitPrice { get; set; } = unitPrice;
+        public string Category { get; set; } = category;
+        public decimal Price { get; set; } = price;
         public int StockQuantity { get; set; } = stockQuantity;
-        public string UnitOfMeasure { get; set; } = unitOfMeasure;
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 
