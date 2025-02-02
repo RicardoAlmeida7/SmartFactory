@@ -5,9 +5,9 @@ namespace SmartFactoryApplication.Inventory.Interfaces
 {
     public interface IStockMovementService
     {
-        Task<StockMovementDto> CreateStockMovementAsync(int materialId, int quantity, MovementType type, string description);
-        Task<IEnumerable<StockMovementDto>> GetByMaterialIdAsync(int materialId);
-        Task<IEnumerable<StockMovementDto>> GetByMovementTypeAsync(MovementType type);
-        Task<IEnumerable<StockMovementDto>> GetByDateRangeAsync(DateTime startDate, DateTime endDate);
+        Task<StockMovementModel> CreateStockMovementAsync(int materialId, int quantity, MovementType type, string description);
+        Task<IEnumerable<StockMovementModel>> GetByMaterialIdAsync(int materialId);
+        Task<IEnumerable<StockMovementModel>> GetByMovementTypeAsync(MovementType type);
+        Task<IEnumerable<StockMovementModel>> GetByDateRangeAsync(DateTime startDate, DateTime endDate);
     }
 }

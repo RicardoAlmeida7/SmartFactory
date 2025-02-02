@@ -12,29 +12,29 @@ namespace SmartFactoryApplication.Inventory.Service
         private readonly IStockMovementRepository _stockMovementRepository = stockMovementRepository;
         private readonly IMapper _mapper = mapper;
 
-        public async Task<StockMovementDto> CreateStockMovementAsync(int materialId, int quantity, MovementType type, string description)
+        public async Task<StockMovementModel> CreateStockMovementAsync(int materialId, int quantity, MovementType type, string description)
         {
-            var stockMovement = new StockMovement(materialId, quantity, type, description);
+            var stockMovement = new ProductStockMovement(materialId, quantity, type, description);
             var createdStockMovement = await _stockMovementRepository.CreateAsync(stockMovement);
-            return _mapper.Map<StockMovementDto>(createdStockMovement);
+            return _mapper.Map<StockMovementModel>(createdStockMovement);
         }
 
-        public async Task<IEnumerable<StockMovementDto>> GetByDateRangeAsync(DateTime startDate, DateTime endDate)
+        public async Task<IEnumerable<StockMovementModel>> GetByDateRangeAsync(DateTime startDate, DateTime endDate)
         {
             var stockMovement = await _stockMovementRepository.GetByDateRangeAsync(startDate, endDate);
-            return (IEnumerable<StockMovementDto>)_mapper.Map<StockMovementDto>(stockMovement);
+            return (IEnumerable<StockMovementModel>)_mapper.Map<StockMovementModel>(stockMovement);
         }
 
-        public async Task<IEnumerable<StockMovementDto>> GetByMaterialIdAsync(int materialId)
+        public async Task<IEnumerable<StockMovementModel>> GetByMaterialIdAsync(int materialId)
         {
             var stockMovement = await _stockMovementRepository.GetByMaterialIdAsync(materialId);
-            return (IEnumerable<StockMovementDto>)_mapper.Map<StockMovementDto>(stockMovement);
+            return (IEnumerable<StockMovementModel>)_mapper.Map<StockMovementModel>(stockMovement);
         }
 
-        public async Task<IEnumerable<StockMovementDto>> GetByMovementTypeAsync(MovementType type)
+        public async Task<IEnumerable<StockMovementModel>> GetByMovementTypeAsync(MovementType type)
         {
             var stockMovement = await _stockMovementRepository.GetByMovementTypeAsync(type);
-            return (IEnumerable<StockMovementDto>)_mapper.Map<StockMovementDto>(stockMovement);
+            return (IEnumerable<StockMovementModel>)_mapper.Map<StockMovementModel>(stockMovement);
         }
     }
 }

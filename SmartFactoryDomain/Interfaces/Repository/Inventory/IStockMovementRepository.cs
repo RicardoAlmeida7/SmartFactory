@@ -3,10 +3,10 @@ using SmartFactoryDomain.Enums;
 
 namespace SmartFactoryDomain.Interfaces.Repository.Inventory
 {
-    public interface IStockMovementRepository: IBaseRepository<StockMovement>
+    public interface IStockMovementRepository: IBaseRepository<StockMovementBase>
     {
-        Task<IEnumerable<StockMovement>> GetByMaterialIdAsync(int materialId);
-        Task<IEnumerable<StockMovement>> GetByMovementTypeAsync(MovementType type);
-        Task<IEnumerable<StockMovement>> GetByDateRangeAsync(DateTime startDate, DateTime endDate);
+        Task<IEnumerable<StockMovementBase>> GetByMaterialIdAsync(int materialId);
+        Task<IEnumerable<StockMovementBase>> GetByMovementTypeAsync(MovementType type);
+        Task<IEnumerable<StockMovementBase>> GetByDateRangeAsync(DateTime startDate, DateTime endDate);
     }
 }

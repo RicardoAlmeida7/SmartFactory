@@ -11,11 +11,11 @@ namespace SmartFactoryApplication.Inventory.Service
         private readonly IProductRepository _productRepository = productRepository;
         private readonly IMapper _mapper = mapper;
 
-        public async Task<ProductDto> CreateProductAsync(string name, string code, string category, decimal price, int stockQuantity)
+        public async Task<ProductModel> CreateProductAsync(string name, string code, string category, decimal price, int stockQuantity)
         {
             var product = new Product(name, code, category, price, stockQuantity);
             var createdProduct = await _productRepository.CreateAsync(product);
-            return _mapper.Map<ProductDto>(createdProduct);
+            return _mapper.Map<ProductModel>(createdProduct);
         }
 
         public async Task<bool> DeleteProductAsync(int id)
@@ -25,23 +25,23 @@ namespace SmartFactoryApplication.Inventory.Service
             return await _productRepository.DeleteAsync(product);
         }
 
-        public async Task<IEnumerable<ProductDto>> GetAllProductsAsync()
+        public async Task<IEnumerable<ProductModel>> GetAllProductsAsync()
         {
             var products = await _productRepository.GetAllAsync();
-            return _mapper.Map<IEnumerable<ProductDto>>(products);
+            return _mapper.Map<IEnumerable<ProductModel>>(products);
         }
 
-        public async Task<ProductDto?> GetProductByIdAsync(int id)
+        public async Task<ProductModel?> GetProductByIdAsync(int id)
         {
             var product = await _productRepository.GetByIdAsync(id);
-            return product == null ? null : _mapper.Map<ProductDto>(product);
+            return product == null ? null : _mapper.Map<ProductModel>(product);
         }
 
-        public async Task<ProductDto> UpdateProductAsync(int id, string name, string code, string category, decimal price, int stockQuantity)
+        public async Task<ProductModel> UpdateProductAsync(int id, string name, string code, string category, decimal price, int stockQuantity)
         {
             var product = new Product(name, code, category, price, stockQuantity) { Id = id };
             var updatedProduct = await _productRepository.UpdateAsync(product);
-            return _mapper.Map<ProductDto>(updatedProduct);
+            return _mapper.Map<ProductModel>(updatedProduct);
         }
     }
 }

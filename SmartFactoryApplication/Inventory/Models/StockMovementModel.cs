@@ -2,7 +2,7 @@
 
 namespace SmartFactoryApplication.Inventory.Models
 {
-    public class StockMovementDto(int id, int materialId, int quantity, MovementType type, string description, DateTime movementDate)
+    public class StockMovementModel(int id, int materialId, int quantity, MovementType type, string description, DateTime movementDate)
     {
         public int Id { get; set; } = id;
         public int MaterialId { get; set; } = materialId;
