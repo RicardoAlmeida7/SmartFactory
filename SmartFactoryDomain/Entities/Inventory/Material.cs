@@ -11,6 +11,8 @@
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 
+        public List<ProductMaterial> ProductMaterials { get; set; } = [];
+
         public void UpdateStock(int quantity)
         {
             if (quantity < 0)

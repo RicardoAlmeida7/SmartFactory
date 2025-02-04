@@ -1,10 +1,12 @@
 using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
 using SmartFactoryApplication.Config.AutoMapper;
 using SmartFactoryApplication.Inventory.Interfaces;
 using SmartFactoryApplication.Inventory.Service;
+using SmartFactoryData.Context;
+using SmartFactoryData.Repositories.Inventory;
 using SmartFactoryDomain.Interfaces.Repository.Inventory;
-using SmartFactoryInfrastructure.Data.Repositories.Inventory;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +15,13 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+
+#region Database configuration
+
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'MvcMovieContext' not found.")));
+
+#endregion
 
 #region AutoMapper configuration
 var mappingConfig = new MapperConfiguration(profile =>
@@ -29,8 +38,8 @@ builder.Services.AddSingleton(mapper);
 
 #region IOC configuration
 // Repositories
-builder.Services.AddSingleton<IProductRepository, ProductRepository>();
-builder.Services.AddSingleton<IMaterialRepository, MaterialRepository>();
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<IMaterialRepository, MaterialRepository>();
 
 // Services
 builder.Services.AddScoped<IProductService, ProductService>();
