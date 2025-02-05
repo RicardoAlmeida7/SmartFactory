@@ -11,9 +11,9 @@ namespace SmartFactoryApplication.Inventory.Service
         private readonly IProductRepository _productRepository = productRepository;
         private readonly IMapper _mapper = mapper;
 
-        public async Task<ProductModel> CreateProductAsync(string name, string code, string category, decimal price, int stockQuantity)
+        public async Task<ProductModel> CreateProductAsync(ProductModel model)
         {
-            var product = new Product(name, code, category, price, stockQuantity);
+            var product = _mapper.Map<Product>(model);
             var createdProduct = await _productRepository.CreateAsync(product);
             return _mapper.Map<ProductModel>(createdProduct);
         }
@@ -37,9 +37,9 @@ namespace SmartFactoryApplication.Inventory.Service
             return product == null ? null : _mapper.Map<ProductModel>(product);
         }
 
-        public async Task<ProductModel> UpdateProductAsync(int id, string name, string code, string category, decimal price, int stockQuantity)
+        public async Task<ProductModel> UpdateProductAsync(ProductModel model)
         {
-            var product = new Product(name, code, category, price, stockQuantity) { Id = id };
+            var product = _mapper.Map<Product>(model);
             var updatedProduct = await _productRepository.UpdateAsync(product);
             return _mapper.Map<ProductModel>(updatedProduct);
         }

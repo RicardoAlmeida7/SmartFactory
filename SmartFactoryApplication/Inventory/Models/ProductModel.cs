@@ -8,6 +8,6 @@
         public string Category { get; set; } = category;
         public decimal Price { get; set; } = price;
         public int StockQuantity { get; set; } = stockQuantity;
-        public List<ProductMaterialModel> ProductMaterials { get; set; } = [];
+        public virtual List<ProductMaterialModel> ProductMaterials { get; set; } = [];
     }
 }

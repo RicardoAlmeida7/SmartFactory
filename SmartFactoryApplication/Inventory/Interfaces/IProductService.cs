@@ -4,10 +4,10 @@ namespace SmartFactoryApplication.Inventory.Interfaces
 {
     public interface IProductService
     {
-        Task<ProductModel> CreateProductAsync(string name, string code, string category, decimal price, int stockQuantity);
+        Task<ProductModel> CreateProductAsync(ProductModel model);
         Task<ProductModel?> GetProductByIdAsync(int id);
         Task<IEnumerable<ProductModel>> GetAllProductsAsync();
-        Task<ProductModel> UpdateProductAsync(int id, string name, string code, string category, decimal price, int stockQuantity);
+        Task<ProductModel> UpdateProductAsync(ProductModel model);
         Task<bool> DeleteProductAsync(int id);
     }
 }

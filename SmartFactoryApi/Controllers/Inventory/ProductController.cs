@@ -19,13 +19,13 @@ namespace SmartFactoryApi.Controllers.Inventory
         [HttpPost]
         public async Task<ProductModel> Create(ProductModel model)
         {
-            return await _productService.CreateProductAsync(model.Name, model.Code, model.Category, model.Price, model.StockQuantity);
+            return await _productService.CreateProductAsync(model);
         }
 
         [HttpPut]
         public async Task<ProductModel> Update(ProductModel model)
         {
-            return await _productService.UpdateProductAsync(model.Id, model.Name, model.Code, model.Category, model.Price, model.StockQuantity);
+            return await _productService.UpdateProductAsync(model);
         }
 
         [HttpDelete("{id}")]
