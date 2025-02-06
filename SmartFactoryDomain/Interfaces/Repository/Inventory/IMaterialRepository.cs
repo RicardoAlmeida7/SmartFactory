@@ -6,5 +6,7 @@ namespace SmartFactoryDomain.Interfaces.Repository.Inventory
     {
         Task<IEnumerable<Material>> GetByProductIdAsync(int productId);
         Task<Material?> GetByCodeAsync(string code);
+        Task<bool> ExistsByNameAsync(string name);
+        Task<bool> ExistsByCodeAsync(string code);
     }
 }

@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using SmartFactoryApplication.Inventory.Interfaces;
+using SmartFactoryApplication.Inventory.Interfaces.Services;
 using SmartFactoryApplication.Inventory.Models;
 
 namespace SmartFactoryApi.Controllers.Inventory

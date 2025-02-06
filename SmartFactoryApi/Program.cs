@@ -2,8 +2,11 @@ using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
 using SmartFactoryApplication.Config.AutoMapper;
-using SmartFactoryApplication.Inventory.Interfaces;
+using SmartFactoryApplication.Inventory.Interfaces.Services;
+using SmartFactoryApplication.Inventory.Interfaces.UseCases;
 using SmartFactoryApplication.Inventory.Service;
+using SmartFactoryApplication.Inventory.UseCases;
+using SmartFactoryApplication.Validation;
 using SmartFactoryData.Context;
 using SmartFactoryData.Repositories.Inventory;
 using SmartFactoryDomain.Interfaces.Repository.Inventory;
@@ -44,6 +47,12 @@ builder.Services.AddScoped<IMaterialRepository, MaterialRepository>();
 // Services
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IMaterialService, MaterialService>();
+
+// Use cases
+builder.Services.AddScoped<IMaterialUseCases, MaterialUseCases>();
+
+// Validation
+builder.Services.AddScoped<IValidationError, ValidationError>();
 #endregion
 
 var app = builder.Build();

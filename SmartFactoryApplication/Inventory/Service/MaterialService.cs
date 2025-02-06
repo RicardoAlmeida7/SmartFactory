@@ -1,47 +1,26 @@
-﻿using AutoMapper;
-using SmartFactoryApplication.Inventory.Interfaces;
+﻿using SmartFactoryApplication.Inventory.Interfaces.Services;
+using SmartFactoryApplication.Inventory.Interfaces.UseCases;
 using SmartFactoryApplication.Inventory.Models;
-using SmartFactoryDomain.Entities.Inventory;
-using SmartFactoryDomain.Interfaces.Repository.Inventory;
+using SmartFactoryApplication.Model;
 
 namespace SmartFactoryApplication.Inventory.Service
 {
-    public class MaterialService(IMaterialRepository materialRepository, IMapper mapper) : IMaterialService
+    public class MaterialService(IMaterialUseCases useCases) : IMaterialService
     {
-        private readonly IMaterialRepository _materialRepository = materialRepository;
-        private readonly IMapper _mapper = mapper;
+        private readonly IMaterialUseCases _useCases = useCases;
 
-        public async Task<MaterialModel> CreateMaterialAsync(string name, string code, decimal unitPrice, int stockQuantity, string unitOfMeasure)
-        {
-            var material = new Material(name, code, unitPrice, stockQuantity, unitOfMeasure);
-            var createdMaterial = await _materialRepository.CreateAsync(material);
-            return _mapper.Map<MaterialModel>(createdMaterial);
-        }
+        public async Task<Response<MaterialModel>> CreateMaterialAsync(MaterialModel model) =>
+            await _useCases.CreatMaterialAsync(model);
 
-        public async Task<bool> DeleteMaterialAsync(int id)
-        {
-            var material = await _materialRepository.GetByIdAsync(id);
-            if (material == null) return false;
-            return await _materialRepository.DeleteAsync(material);
-        }
+        public async Task<Response<MaterialModel>> DeleteMaterialAsync(int id) => await _useCases.DeleteMaterialAsync(id);
 
-        public async Task<IEnumerable<MaterialModel>> GetAllMaterialsAsync()
-        {
-            var materials = await _materialRepository.GetAllAsync();
-            return _mapper.Map<IEnumerable<MaterialModel>>(materials);
-        }
+        public async Task<Response<IEnumerable<MaterialModel>>> GetAllMaterialsAsync() => await _useCases.GetAllMaterialsAsync();
 
-        public async Task<MaterialModel?> GetMaterialByIdAsync(int id)
-        {
-            var material = await _materialRepository.GetByIdAsync(id);
-            return material == null ? null : _mapper.Map<MaterialModel>(material);
-        }
+        public async Task<Response<MaterialModel>> GetMaterialByIdAsync(int id) => await _useCases.GetMaterialByIdAsync(id);
 
-        public async Task<MaterialModel> UpdateMaterialAsync(int id, string name, string code, decimal unitPrice, int stockQuantity, string unitOfMeasure)
+        public Task<Response<MaterialModel>> UpdateMaterialAsync(MaterialModel model)
         {
-            var material = new Material(name, code, unitPrice, stockQuantity, unitOfMeasure) { Id = id };
-            var updatedMaterial = await _materialRepository.UpdateAsync(material);
-            return _mapper.Map<MaterialModel>(updatedMaterial);
+            throw new NotImplementedException();
         }
     }
 }

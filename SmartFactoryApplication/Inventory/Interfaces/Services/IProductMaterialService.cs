@@ -1,6 +1,6 @@
 ﻿using SmartFactoryApplication.Inventory.Models;
 
-namespace SmartFactoryApplication.Inventory.Interfaces
+namespace SmartFactoryApplication.Inventory.Interfaces.Services
 {
     public interface IProductMaterialService
     {

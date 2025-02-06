@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using SmartFactoryApplication.Inventory.Interfaces;
+using SmartFactoryApplication.Inventory.Interfaces.Services;
 using SmartFactoryApplication.Inventory.Models;
 using SmartFactoryDomain.Interfaces.Repository.Inventory;
 

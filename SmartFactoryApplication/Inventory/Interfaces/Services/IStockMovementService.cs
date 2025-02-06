@@ -1,7 +1,7 @@
 ﻿using SmartFactoryApplication.Inventory.Models;
 using SmartFactoryDomain.Enums;
 
-namespace SmartFactoryApplication.Inventory.Interfaces
+namespace SmartFactoryApplication.Inventory.Interfaces.Services
 {
     public interface IStockMovementService
     {
