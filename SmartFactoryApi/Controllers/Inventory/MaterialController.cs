@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SmartFactoryApplication.Inventory.Interfaces.Services;
 using SmartFactoryApplication.Inventory.Models;
-using SmartFactoryApplication.Model;
 
 namespace SmartFactoryApi.Controllers.Inventory
 {
@@ -31,10 +30,17 @@ namespace SmartFactoryApi.Controllers.Inventory
             return Ok(materialCreated.Data);
         }
 
-        [HttpPut]
-        public async Task<Response<MaterialModel>> UpdateAsync(MaterialModel model)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateAsync(int id, MaterialModel model)
         {
-            return await _materialService.UpdateMaterialAsync(model);
+            var updatedMaterial = await _materialService.UpdateMaterialAsync(id, model);
+
+            if (!updatedMaterial.IsValid)
+            {
+                return BadRequest(updatedMaterial.Errors);
+            }
+
+            return Ok(updatedMaterial.Data);
         }
 
         [HttpDelete("{id}")]

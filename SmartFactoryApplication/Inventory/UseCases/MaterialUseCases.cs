@@ -5,8 +5,6 @@ using SmartFactoryApplication.Model;
 using SmartFactoryApplication.Validation;
 using SmartFactoryDomain.Entities.Inventory;
 using SmartFactoryDomain.Interfaces.Repository.Inventory;
-using System.Collections.Generic;
-using System.Reflection;
 
 namespace SmartFactoryApplication.Inventory.UseCases
 {
@@ -62,6 +60,33 @@ namespace SmartFactoryApplication.Inventory.UseCases
             return Response<MaterialModel>.Success(successMessages);
         }
 
+        public async Task<Response<MaterialModel>> UpdateMaterialAsync(int id, MaterialModel model)
+        {
+            var existingMaterial = await _materialRepository.GetByIdAsync(id);
+            if (existingMaterial == null)
+            {
+                _validationError.AddError(nameof(MaterialModel.Id), "Material não encontrado.");
+                return Response<MaterialModel>.Fail(_validationError.GetValidationErrors());
+            }
+
+            ValidateMaterialData(model);
+
+            if (!string.IsNullOrWhiteSpace(model.Code) && model.Code != existingMaterial.Code)
+            {
+                if (await _materialRepository.ExistsByCodeAsync(model.Code))
+                {
+                    _validationError.AddError(nameof(model.Code), "Já existe um material com esse código.");
+                }
+            }
+
+            if (_validationError.HasValidationErrors())
+                return Response<MaterialModel>.Fail(_validationError.GetValidationErrors());
+
+            _mapper.Map(model, existingMaterial);
+            var updatedMaterial = await _materialRepository.UpdateAsync(existingMaterial);
+
+            return Response<MaterialModel>.Success(_mapper.Map<MaterialModel>(updatedMaterial));
+        }
 
         public async Task<Response<IEnumerable<MaterialModel>>> GetAllMaterialsAsync()
         {

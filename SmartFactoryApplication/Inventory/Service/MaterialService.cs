@@ -18,9 +18,6 @@ namespace SmartFactoryApplication.Inventory.Service
 
         public async Task<Response<MaterialModel>> GetMaterialByIdAsync(int id) => await _useCases.GetMaterialByIdAsync(id);
 
-        public Task<Response<MaterialModel>> UpdateMaterialAsync(MaterialModel model)
-        {
-            throw new NotImplementedException();
-        }
+        public async Task<Response<MaterialModel>> UpdateMaterialAsync(int id, MaterialModel model) => await _useCases.UpdateMaterialAsync(id, model);
     }
 }
