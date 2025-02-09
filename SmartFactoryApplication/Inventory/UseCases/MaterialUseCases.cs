@@ -2,6 +2,7 @@
 using SmartFactoryApplication.Inventory.Interfaces.UseCases;
 using SmartFactoryApplication.Inventory.Models;
 using SmartFactoryApplication.Model;
+using SmartFactoryApplication.Utils;
 using SmartFactoryApplication.Validation;
 using SmartFactoryDomain.Entities.Inventory;
 using SmartFactoryDomain.Interfaces.Repository.Inventory;
@@ -22,7 +23,7 @@ namespace SmartFactoryApplication.Inventory.UseCases
                 return Response<MaterialModel>.Fail(_validationError.GetValidationErrors());
 
             var createdMaterial = await _materialRepository.CreateAsync(_mapper.Map<Material>(model));
-            return Response<MaterialModel>.Success(_mapper.Map<MaterialModel>(createdMaterial));
+            return Response<MaterialModel>.Created(_mapper.Map<MaterialModel>(createdMaterial));
         }
 
 
@@ -31,7 +32,7 @@ namespace SmartFactoryApplication.Inventory.UseCases
             var material = await _materialRepository.GetByIdAsync(id);
             if (material == null)
             {
-                _validationError.AddError(nameof(MaterialModel.Id), "Material não encontrado.");
+                _validationError.AddError(nameof(MaterialModel.Id), ConstantMessages.MATERIAL_NOT_FOUND);
                 return Response<MaterialModel>.Fail(_validationError.GetValidationErrors());
             }
 
@@ -48,16 +49,11 @@ namespace SmartFactoryApplication.Inventory.UseCases
 
             if (!success)
             {
-                _validationError.AddError(nameof(MaterialModel.Id), $"Falha ao excluir material: {response.Data?.Code}.");
+                _validationError.AddError(nameof(MaterialModel.Id), $"{ConstantMessages.FAILED_DELETE_MATERIAL} :{response.Data?.Code}.");
                 return Response<MaterialModel>.Fail(_validationError.GetValidationErrors());
             }
 
-            var successMessages = new Dictionary<string, string>
-            {
-                { "Success", "Material excluído com sucesso!" }
-            };
-
-            return Response<MaterialModel>.Success(successMessages);
+            return Response<MaterialModel>.NoContent();
         }
 
         public async Task<Response<MaterialModel>> UpdateMaterialAsync(int id, MaterialModel model)
@@ -65,18 +61,17 @@ namespace SmartFactoryApplication.Inventory.UseCases
             var existingMaterial = await _materialRepository.GetByIdAsync(id);
             if (existingMaterial == null)
             {
-                _validationError.AddError(nameof(MaterialModel.Id), "Material não encontrado.");
-                return Response<MaterialModel>.Fail(_validationError.GetValidationErrors());
+                _validationError.AddError(nameof(MaterialModel.Id), ConstantMessages.MATERIAL_NOT_FOUND);
+                return Response<MaterialModel>.NotFound(_validationError.GetValidationErrors());
             }
 
             ValidateMaterialData(model);
 
             if (!string.IsNullOrWhiteSpace(model.Code) && model.Code != existingMaterial.Code)
             {
-                if (await _materialRepository.ExistsByCodeAsync(model.Code))
-                {
-                    _validationError.AddError(nameof(model.Code), "Já existe um material com esse código.");
-                }
+                var exists = await _materialRepository.ExistsByCodeAsync(model.Code);
+                if (exists)
+                    _validationError.AddError(nameof(model.Code), ConstantMessages.DUPLICATE_MATERIAL_CODE);
             }
 
             if (_validationError.HasValidationErrors())
@@ -100,19 +95,19 @@ namespace SmartFactoryApplication.Inventory.UseCases
             ValidateMaterialData(model);
 
             if (!string.IsNullOrWhiteSpace(model.Name) && await _materialRepository.ExistsByNameAsync(model.Name))
-                _validationError.AddError(nameof(model.Name), "Já existe um material com esse nome.");
+                _validationError.AddError(nameof(model.Name), ConstantMessages.DUPLICATE_MATERIAL_NAME);
 
             if (!string.IsNullOrWhiteSpace(model.Code) && await _materialRepository.ExistsByCodeAsync(model.Code))
-                _validationError.AddError(nameof(model.Code), "Já existe um material com esse código.");
+                _validationError.AddError(nameof(model.Code), ConstantMessages.DUPLICATE_MATERIAL_CODE);
         }
 
         private void ValidateMaterialData(MaterialModel model)
         {
-            AddValidationError(string.IsNullOrWhiteSpace(model.Name), nameof(model.Name), "O nome do material é obrigatório.");
-            AddValidationError(string.IsNullOrWhiteSpace(model.Code), nameof(model.Code), "O código do material é obrigatório.");
-            AddValidationError(string.IsNullOrWhiteSpace(model.UnitOfMeasure), nameof(model.UnitOfMeasure), "A unidade de medida é obrigatória.");
-            AddValidationError(model.StockQuantity < 0, nameof(model.StockQuantity), "A quantidade em estoque não pode ser negativa.");
-            AddValidationError(model.UnitPrice < 0, nameof(model.UnitPrice), "O preço unitário não pode ser negativo.");
+            AddValidationError(string.IsNullOrWhiteSpace(model.Name), nameof(model.Name), ConstantMessages.REQUIRED_MATERIAL_NAME);
+            AddValidationError(string.IsNullOrWhiteSpace(model.Code), nameof(model.Code), ConstantMessages.REQUIRED_MATERIAL_CODE);
+            AddValidationError(string.IsNullOrWhiteSpace(model.UnitOfMeasure), nameof(model.UnitOfMeasure), ConstantMessages.REQUIRED_UNIT_OF_MESUARE);
+            AddValidationError(model.StockQuantity < 0, nameof(model.StockQuantity), ConstantMessages.QUANTITY_STOCK_CANNOT_BE_NEGATIVE);
+            AddValidationError(model.UnitPrice < 0, nameof(model.UnitPrice), ConstantMessages.UNIT_PRICE_CANNOT_BE_NEGATIVE);
         }
 
         private void AddValidationError(bool condition, string field, string message)

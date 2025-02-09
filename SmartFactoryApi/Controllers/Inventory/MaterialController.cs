@@ -1,11 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SmartFactoryApplication.Inventory.Interfaces.Services;
 using SmartFactoryApplication.Inventory.Models;
+using SmartFactoryApplication.Utils;
 
 namespace SmartFactoryApi.Controllers.Inventory
 {
     [ApiController]
-    [Route("inventory/[controller]")]
+    [Route("inventory/[controller]/v1")]
     public class MaterialController(IMaterialService materialService) : ControllerBase
     {
         private readonly IMaterialService _materialService = materialService;
@@ -13,60 +14,78 @@ namespace SmartFactoryApi.Controllers.Inventory
         [HttpGet]
         public async Task<IActionResult> GetAllAsync()
         {
-            var materials = await _materialService.GetAllMaterialsAsync();
-            return Ok(materials.Data);
+            try
+            {
+                var materials = await _materialService.GetAllMaterialsAsync();
+                return StatusCode((int)materials.StatusCode, materials.Data);
+            }
+            catch (Exception)
+            {
+                return StatusCode((int)HttpStatusCodes.INTERNAL_SERVER_ERROR);
+            }
         }
 
         [HttpPost]
         public async Task<IActionResult> CreateAsync(MaterialModel model)
         {
-            var materialCreated = await _materialService.CreateMaterialAsync(model);
-
-            if (!materialCreated.IsValid)
+            try
             {
-                return BadRequest(materialCreated.Errors);
+                var response = await _materialService.CreateMaterialAsync(model);
+                object? data = response.IsValid ? response.Data : response.Errors;
+                return StatusCode((int)response.StatusCode, data);
             }
-
-            return Ok(materialCreated.Data);
+            catch (Exception)
+            {
+                return StatusCode((int)HttpStatusCodes.INTERNAL_SERVER_ERROR);
+            }
         }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateAsync(int id, MaterialModel model)
         {
-            var updatedMaterial = await _materialService.UpdateMaterialAsync(id, model);
-
-            if (!updatedMaterial.IsValid)
+            try
             {
-                return BadRequest(updatedMaterial.Errors);
+                var response = await _materialService.UpdateMaterialAsync(id, model);
+                object? data = response.IsValid ? response.Data : response.Errors;
+                return StatusCode((int)response.StatusCode, data);
+            }
+            catch (Exception)
+            {
+                return StatusCode((int)HttpStatusCodes.INTERNAL_SERVER_ERROR);
             }
 
-            return Ok(updatedMaterial.Data);
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteAsync(int id)
         {
-            var exclusion = await _materialService.DeleteMaterialAsync(id);
-
-            if (!exclusion.IsValid)
+            try
             {
-                return BadRequest(exclusion.Errors);
+                var response = await _materialService.DeleteMaterialAsync(id);
+                object? data = response.IsValid ? response.Data : response.Errors;
+                return StatusCode((int)response.StatusCode, data);
+            }
+            catch (Exception)
+            {
+                return StatusCode((int)HttpStatusCodes.INTERNAL_SERVER_ERROR);
             }
 
-            return Ok(exclusion.Data);
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetAsync(int id)
         {
-            var material = await _materialService.GetMaterialByIdAsync(id);
-
-            if (!material.IsValid)
+            try
             {
-                return BadRequest(material.Errors);
+                var response = await _materialService.GetMaterialByIdAsync(id);
+                object? data = response.IsValid ? response.Data : response.Errors;
+                return StatusCode((int)response.StatusCode, data);
+            }
+            catch (Exception)
+            {
+                return StatusCode((int)HttpStatusCodes.INTERNAL_SERVER_ERROR);
             }
 
-            return Ok(material.Data);
         }
     }
 }
