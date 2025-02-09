@@ -1,6 +1,6 @@
 ﻿namespace SmartFactoryApplication.Utils
 {
-    internal static class ConstantMessages
+    public static class ConstantMessages
     {
         #region Inventory
         // Material

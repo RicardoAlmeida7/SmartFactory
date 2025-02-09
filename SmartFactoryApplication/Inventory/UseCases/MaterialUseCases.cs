@@ -33,7 +33,7 @@ namespace SmartFactoryApplication.Inventory.UseCases
             if (material == null)
             {
                 _validationError.AddError(nameof(MaterialModel.Id), ConstantMessages.MATERIAL_NOT_FOUND);
-                return Response<MaterialModel>.Fail(_validationError.GetValidationErrors());
+                return Response<MaterialModel>.NotFound(_validationError.GetValidationErrors());
             }
 
             return Response<MaterialModel>.Success(_mapper.Map<MaterialModel>(material));

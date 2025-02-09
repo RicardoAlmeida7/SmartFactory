@@ -1,25 +1,29 @@
 ﻿namespace SmartFactoryDomain.Entities.Inventory
 {
-    public class Material(string name, string code, decimal unitPrice, int stockQuantity, string unitOfMeasure)
+    public class Material
     {
-        public int Id { get; set; }
-        public string Name { get; set; } = name;
-        public string Code { get; set; } = code;
-        public decimal UnitPrice { get; set; } = unitPrice;
-        public int StockQuantity { get; set; } = stockQuantity;
-        public string UnitOfMeasure { get; set; } = unitOfMeasure;
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-        public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
+        public Material() { }
 
-        public virtual List<ProductMaterial> ProductMaterials { get; set; } = [];
-
-        public void UpdateStock(int quantity)
+        public Material(string name, string code, decimal unitPrice, int stockQuantity, string unitOfMeasure)
         {
-            if (quantity < 0)
-                throw new InvalidOperationException("Stock quantity cannot be negative.");
-
-            StockQuantity = quantity;
+            Name = name;
+            Code = code;
+            UnitPrice = unitPrice;
+            StockQuantity = stockQuantity;
+            UnitOfMeasure = unitOfMeasure;
+            CreatedAt = DateTime.UtcNow;
             UpdatedAt = DateTime.UtcNow;
         }
+
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string Code { get; set; }
+        public decimal UnitPrice { get; set; }
+        public int StockQuantity { get; set; }
+        public string UnitOfMeasure { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
+
+        public virtual List<ProductMaterial> ProductMaterials { get; set; } = [];
     }
 }
