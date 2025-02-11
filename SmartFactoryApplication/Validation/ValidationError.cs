@@ -13,6 +13,12 @@ namespace SmartFactoryApplication.Validation
             foreach (var error in errors) _errors.TryAdd(error.Key, error.Value);
         }
 
+        public void AddValidationError(bool condition, string field, string message)
+        {
+            if (condition)
+                this.AddError(field, message);
+        }
+
         public Dictionary<string, string> GetValidationErrors() => _errors;
 
         public bool HasValidationErrors() => _errors.Count > 0;

@@ -7,7 +7,7 @@ namespace SmartFactoryData.Repositories.Inventory
 {
     public class MaterialRepository(AppDbContext context) : BaseRepository<Material>(context), IMaterialRepository
     {
-        public async Task<bool> ExistsByCodeAsync(string code) =>  
+        public async Task<bool> ExistsByCodeAsync(string code) =>
             await _dbSet.Where(m => m.Code.ToLower() == code.ToLower()).AnyAsync();
 
         public async Task<bool> ExistsByNameAsync(string name) =>

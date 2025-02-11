@@ -1,43 +1,71 @@
 using Microsoft.AspNetCore.Mvc;
 using SmartFactoryApplication.Inventory.Interfaces.Services;
 using SmartFactoryApplication.Inventory.Models;
+using SmartFactoryApplication.Utils;
 
 namespace SmartFactoryApi.Controllers.Inventory
 {
     [ApiController]
-    [Route("inventory/[controller]")]
+    [Route("inventory/[controller]/v1")]
     public class ProductController(IProductService productService) : ControllerBase
     {
         private readonly IProductService _productService = productService;
 
         [HttpGet]
-        public async Task<IEnumerable<ProductModel>> Get()
+        public async Task<IActionResult> GetAsync()
         {
-            return await _productService.GetAllProductsAsync();
+            try
+            {
+                var materials = await _productService.GetAllProductsAsync();
+                return StatusCode((int)materials.StatusCode, materials.Data);
+            }
+            catch (Exception)
+            {
+                return StatusCode((int)HttpStatusCodes.INTERNAL_SERVER_ERROR);
+            }
         }
 
         [HttpPost]
-        public async Task<ProductModel> Create(ProductModel model)
+        public async Task<IActionResult> CreateAsync(ProductModel model)
         {
-            return await _productService.CreateProductAsync(model);
+            try
+            {
+                var response = await _productService.CreateProductAsync(model);
+                object? data = response.IsValid ? response.Data : response.Errors;
+                return StatusCode((int)response.StatusCode, data);
+            }
+            catch (Exception)
+            {
+                return StatusCode((int)HttpStatusCodes.INTERNAL_SERVER_ERROR);
+            }
         }
 
         [HttpPut]
-        public async Task<ProductModel> Update(ProductModel model)
+        public async Task<IActionResult> UpdateAsync(ProductModel model)
         {
-            return await _productService.UpdateProductAsync(model);
+            return StatusCode((int)HttpStatusCodes.INTERNAL_SERVER_ERROR, "Not implemented [UPDATE]");
         }
 
         [HttpDelete("{id}")]
-        public async Task<bool> Delete(int id)
+        public async Task<IActionResult> DeleteAsync(int id)
         {
-            return await _productService.DeleteProductAsync(id);
+            return StatusCode((int)HttpStatusCodes.INTERNAL_SERVER_ERROR, "Not implemented [DELETE]");
         }
 
         [HttpGet("{id}")]
-        public async Task<ProductModel?> Get(int id)
+        public async Task<IActionResult> GetAsync(int id)
         {
-            return await _productService.GetProductByIdAsync(id);
+            try
+            {
+                var response = await _productService.GetProductByIdAsync(id);
+                object? data = response.IsValid ? response.Data : response.Errors;
+                return StatusCode((int)response.StatusCode, data);
+            }
+            catch (Exception)
+            {
+                return StatusCode((int)HttpStatusCodes.INTERNAL_SERVER_ERROR);
+            }
+
         }
     }
 }

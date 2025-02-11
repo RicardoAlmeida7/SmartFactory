@@ -1,47 +1,27 @@
-﻿using AutoMapper;
-using SmartFactoryApplication.Inventory.Interfaces.Services;
+﻿using SmartFactoryApplication.Inventory.Interfaces.Services;
+using SmartFactoryApplication.Inventory.Interfaces.UseCases;
 using SmartFactoryApplication.Inventory.Models;
-using SmartFactoryDomain.Entities.Inventory;
-using SmartFactoryDomain.Interfaces.Repository.Inventory;
+using SmartFactoryApplication.Model;
 
 namespace SmartFactoryApplication.Inventory.Service
 {
-    public class ProductService(IProductRepository productRepository, IMapper mapper) : IProductService
+    public class ProductService(IProductUseCases productUseCases) : IProductService
     {
-        private readonly IProductRepository _productRepository = productRepository;
-        private readonly IMapper _mapper = mapper;
+        private readonly IProductUseCases _productUseCases = productUseCases;
+      
+        public async Task<Response<ProductModel>> CreateProductAsync(ProductModel model) => 
+            await _productUseCases.CreateProductAsync(model);
 
-        public async Task<ProductModel> CreateProductAsync(ProductModel model)
-        {
-            var product = _mapper.Map<Product>(model);
-            var createdProduct = await _productRepository.CreateAsync(product);
-            return _mapper.Map<ProductModel>(createdProduct);
-        }
+        public async Task<Response<ProductModel>> DeleteProductAsync(int id) => 
+            await _productUseCases.DeleteProductAsync(id);
 
-        public async Task<bool> DeleteProductAsync(int id)
-        {
-            var product = await _productRepository.GetByIdAsync(id);
-            if (product == null) return false;
-            return await _productRepository.DeleteAsync(product);
-        }
+        public async Task<Response<IEnumerable<ProductModel>>> GetAllProductsAsync() => 
+            await _productUseCases.GetAllProductsAsync();
 
-        public async Task<IEnumerable<ProductModel>> GetAllProductsAsync()
-        {
-            var products = await _productRepository.GetAllAsync();
-            return _mapper.Map<IEnumerable<ProductModel>>(products);
-        }
+        public async Task<Response<ProductModel?>> GetProductByIdAsync(int id) => 
+            await _productUseCases.GetProductByIdAsync(id);
 
-        public async Task<ProductModel?> GetProductByIdAsync(int id)
-        {
-            var product = await _productRepository.GetByIdAsync(id);
-            return product == null ? null : _mapper.Map<ProductModel>(product);
-        }
-
-        public async Task<ProductModel> UpdateProductAsync(ProductModel model)
-        {
-            var product = _mapper.Map<Product>(model);
-            var updatedProduct = await _productRepository.UpdateAsync(product);
-            return _mapper.Map<ProductModel>(updatedProduct);
-        }
+        public async Task<Response<ProductModel>> UpdateProductAsync(ProductModel model) => 
+            await _productUseCases.UpdateProductAsync(model);
     }
 }

@@ -65,7 +65,7 @@ namespace SmartFactoryApplication.Inventory.UseCases
                 return Response<MaterialModel>.NotFound(_validationError.GetValidationErrors());
             }
 
-            ValidateMaterialData(model);
+            ValidateMaterialModel(model);
 
             if (!string.IsNullOrWhiteSpace(model.Code) && model.Code != existingMaterial.Code)
             {
@@ -92,7 +92,7 @@ namespace SmartFactoryApplication.Inventory.UseCases
 
         private async Task ValidateCreateMaterialAsync(MaterialModel model)
         {
-            ValidateMaterialData(model);
+            ValidateMaterialModel(model);
 
             if (!string.IsNullOrWhiteSpace(model.Name) && await _materialRepository.ExistsByNameAsync(model.Name))
                 _validationError.AddError(nameof(model.Name), ConstantMessages.DUPLICATE_MATERIAL_NAME);
@@ -101,19 +101,13 @@ namespace SmartFactoryApplication.Inventory.UseCases
                 _validationError.AddError(nameof(model.Code), ConstantMessages.DUPLICATE_MATERIAL_CODE);
         }
 
-        private void ValidateMaterialData(MaterialModel model)
+        private void ValidateMaterialModel(MaterialModel model)
         {
-            AddValidationError(string.IsNullOrWhiteSpace(model.Name), nameof(model.Name), ConstantMessages.REQUIRED_MATERIAL_NAME);
-            AddValidationError(string.IsNullOrWhiteSpace(model.Code), nameof(model.Code), ConstantMessages.REQUIRED_MATERIAL_CODE);
-            AddValidationError(string.IsNullOrWhiteSpace(model.UnitOfMeasure), nameof(model.UnitOfMeasure), ConstantMessages.REQUIRED_UNIT_OF_MESUARE);
-            AddValidationError(model.StockQuantity < 0, nameof(model.StockQuantity), ConstantMessages.QUANTITY_STOCK_CANNOT_BE_NEGATIVE);
-            AddValidationError(model.UnitPrice < 0, nameof(model.UnitPrice), ConstantMessages.UNIT_PRICE_CANNOT_BE_NEGATIVE);
-        }
-
-        private void AddValidationError(bool condition, string field, string message)
-        {
-            if (condition)
-                _validationError.AddError(field, message);
+            _validationError.AddValidationError(string.IsNullOrWhiteSpace(model.Name), nameof(model.Name), ConstantMessages.REQUIRED_MATERIAL_NAME);
+            _validationError.AddValidationError(string.IsNullOrWhiteSpace(model.Code), nameof(model.Code), ConstantMessages.REQUIRED_MATERIAL_CODE);
+            _validationError.AddValidationError(string.IsNullOrWhiteSpace(model.UnitOfMeasure), nameof(model.UnitOfMeasure), ConstantMessages.REQUIRED_UNIT_OF_MESUARE);
+            _validationError.AddValidationError(model.StockQuantity < 0, nameof(model.StockQuantity), ConstantMessages.QUANTITY_STOCK_CANNOT_BE_NEGATIVE);
+            _validationError.AddValidationError(model.UnitPrice < 0, nameof(model.UnitPrice), ConstantMessages.UNIT_PRICE_CANNOT_BE_NEGATIVE);
         }
     }
 }

@@ -50,6 +50,7 @@ builder.Services.AddScoped<IMaterialService, MaterialService>();
 
 // Use cases
 builder.Services.AddScoped<IMaterialUseCases, MaterialUseCases>();
+builder.Services.AddScoped<IProductUseCases, ProductUseCases>();
 
 // Validation
 builder.Services.AddScoped<IValidationError, ValidationError>();

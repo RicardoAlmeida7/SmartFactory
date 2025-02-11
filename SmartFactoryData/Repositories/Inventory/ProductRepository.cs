@@ -7,6 +7,12 @@ namespace SmartFactoryData.Repositories.Inventory
 {
     public class ProductRepository(AppDbContext context) : BaseRepository<Product>(context), IProductRepository
     {
+        public async Task<bool> ExistsByCodeAsync(string code) =>
+             await _dbSet.Where(m => m.Code.ToLower() == code.ToLower()).AnyAsync();
+
+        public async Task<bool> ExistsByNameAsync(string name) =>
+            await _dbSet.Where(m => m.Name.ToLower() == name.ToLower()).AnyAsync();
+
         public async Task<IEnumerable<Product>> GetByCategoryAsync(string category)
         {
             return await _dbSet.AsNoTracking()

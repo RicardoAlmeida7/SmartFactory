@@ -1,9 +1,9 @@
 ﻿using SmartFactoryApplication.Inventory.Models;
 using SmartFactoryApplication.Model;
 
-namespace SmartFactoryApplication.Inventory.Interfaces.Services
+namespace SmartFactoryApplication.Inventory.Interfaces.UseCases
 {
-    public interface IProductService
+    public interface IProductUseCases
     {
         Task<Response<ProductModel>> CreateProductAsync(ProductModel model);
         Task<Response<ProductModel?>> GetProductByIdAsync(int id);
