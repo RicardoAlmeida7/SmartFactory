@@ -22,7 +22,7 @@ namespace SmartFactoryApplication.Inventory.UseCases
 
         public async Task<Response<ProductModel>> CreateProductAsync(ProductModel model)
         {
-            await ValidateCreateProductAsync(model);
+            await ValidateProductDataAsync(model);
 
             if (_validationError.HasValidationErrors())
                 return Response<ProductModel>.Fail(_validationError.GetValidationErrors());
@@ -31,9 +31,16 @@ namespace SmartFactoryApplication.Inventory.UseCases
             return Response<ProductModel>.Created(_mapper.Map<ProductModel>(createdProduct));
         }
 
-        public Task<Response<ProductModel>> DeleteProductAsync(int id)
+        public async Task<Response<ProductModel>> DeleteProductAsync(int id)
         {
-            throw new NotImplementedException();
+            var product = await _productRepository.GetByIdAsync(id);
+            if (product == null)
+            {
+                _validationError.AddError(nameof(ProductModel.Id), ConstantMessages.MATERIAL_NOT_FOUND);
+                return Response<ProductModel>.NotFound(_validationError.GetValidationErrors());
+            }
+
+            return Response<ProductModel>.NoContent();
         }
 
         public async Task<Response<IEnumerable<ProductModel>>> GetAllProductsAsync()
@@ -55,12 +62,44 @@ namespace SmartFactoryApplication.Inventory.UseCases
             return Response<ProductModel?>.Success(_mapper.Map<ProductModel>(product));
         }
 
-        public Task<Response<ProductModel>> UpdateProductAsync(ProductModel model)
+        public async Task<Response<ProductModel>> UpdateProductAsync(ProductModel model)
         {
-            throw new NotImplementedException();
+            var idNotNull = (int)(model.Id != null ? model.Id : 0);
+
+            var existingProduct = await _productRepository.GetByIdAsync(idNotNull);
+            
+            if (existingProduct == null)
+            {
+                _validationError.AddError(nameof(ProductModel.Id), ConstantMessages.MATERIAL_NOT_FOUND);
+                return Response<ProductModel>.NotFound(_validationError.GetValidationErrors());
+            }
+
+            ValidateProductModel(model);
+
+            if (_validationError.HasValidationErrors())
+                return Response<ProductModel>.Fail(_validationError.GetValidationErrors());
+
+            if (!string.IsNullOrWhiteSpace(model.Code) && model.Code != existingProduct.Code)
+            {
+                var exists = await _productRepository.ExistsByCodeAsync(model.Code);
+                if (exists)
+                    _validationError.AddError(nameof(model.Code), ConstantMessages.DUPLICATE_PRODUCT_CODE);
+            }
+
+            if (!string.IsNullOrWhiteSpace(model.Name) && model.Name != existingProduct.Name)
+            {
+                var exists = await _productRepository.ExistsByNameAsync(model.Name);
+                if (exists)
+                    _validationError.AddError(nameof(model.Name), ConstantMessages.DUPLICATE_PRODUCT_NAME);
+            }
+
+            _mapper.Map(model, existingProduct);
+            var updatedProduct = await _productRepository.UpdateAsync(existingProduct);
+
+            return Response<ProductModel>.Success(_mapper.Map<ProductModel>(updatedProduct));
         }
 
-        private async Task ValidateCreateProductAsync(ProductModel model)
+        private async Task ValidateProductDataAsync(ProductModel model)
         {
             ValidateProductModel(model);
 
@@ -84,7 +123,7 @@ namespace SmartFactoryApplication.Inventory.UseCases
 
         private async Task ValidateMaterialList(ProductModel model)
         {
-            foreach(var materialId in model.ProductMaterials.Select(x => x.MaterialId).Where(y => y != 0))
+            foreach(var materialId in model.ProductMaterials.Select(pm => pm.MaterialId).Where(id => id != 0))
             {
                 var exist = await _materialRepository.GetByIdAsync(materialId);
                 if (exist is null)

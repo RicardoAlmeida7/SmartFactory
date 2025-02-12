@@ -6,7 +6,7 @@ using SmartFactoryApplication.Utils;
 namespace SmartFactoryApi.Controllers.Inventory
 {
     [ApiController]
-    [Route("inventory/[controller]/v1")]
+    [Route("inventory/v1/[controller]")]
     public class MaterialController(IMaterialService materialService) : ControllerBase
     {
         private readonly IMaterialService _materialService = materialService;
@@ -21,12 +21,12 @@ namespace SmartFactoryApi.Controllers.Inventory
             }
             catch (Exception)
             {
-                return StatusCode((int)HttpStatusCodes.INTERNAL_SERVER_ERROR);
+                return StatusCode((int)HttpStatusCodes.INTERNAL_SERVER_ERROR, "Error: [GET]");
             }
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateAsync(MaterialModel model)
+        public async Task<IActionResult> CreateAsync([FromBody] MaterialModel model)
         {
             try
             {
@@ -36,12 +36,12 @@ namespace SmartFactoryApi.Controllers.Inventory
             }
             catch (Exception)
             {
-                return StatusCode((int)HttpStatusCodes.INTERNAL_SERVER_ERROR);
+                return StatusCode((int)HttpStatusCodes.INTERNAL_SERVER_ERROR, "Error: [POST]");
             }
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateAsync(int id, MaterialModel model)
+        public async Task<IActionResult> UpdateAsync([FromRoute] int id, [FromBody] MaterialModel model)
         {
             try
             {
@@ -51,13 +51,12 @@ namespace SmartFactoryApi.Controllers.Inventory
             }
             catch (Exception)
             {
-                return StatusCode((int)HttpStatusCodes.INTERNAL_SERVER_ERROR);
+                return StatusCode((int)HttpStatusCodes.INTERNAL_SERVER_ERROR, "Error: [PUT]");
             }
-
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteAsync(int id)
+        public async Task<IActionResult> DeleteAsync([FromRoute] int id)
         {
             try
             {
@@ -67,13 +66,12 @@ namespace SmartFactoryApi.Controllers.Inventory
             }
             catch (Exception)
             {
-                return StatusCode((int)HttpStatusCodes.INTERNAL_SERVER_ERROR);
+                return StatusCode((int)HttpStatusCodes.INTERNAL_SERVER_ERROR, "Error: [DELETE]");
             }
-
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetAsync(int id)
+        public async Task<IActionResult> GetAsync([FromRoute] int id)
         {
             try
             {
@@ -83,9 +81,8 @@ namespace SmartFactoryApi.Controllers.Inventory
             }
             catch (Exception)
             {
-                return StatusCode((int)HttpStatusCodes.INTERNAL_SERVER_ERROR);
+                return StatusCode((int)HttpStatusCodes.INTERNAL_SERVER_ERROR, "Error: [GET]");
             }
-
         }
     }
 }

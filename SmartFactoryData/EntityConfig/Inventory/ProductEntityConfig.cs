@@ -42,7 +42,7 @@ namespace SmartFactoryData.EntityConfig.Inventory
             builder.HasMany(p => p.ProductMaterials)
                 .WithOne(pm => pm.Product)
                 .HasForeignKey(pm => pm.ProductId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.SetNull);
 
             builder.Navigation(x => x.ProductMaterials)
                 .AutoInclude();

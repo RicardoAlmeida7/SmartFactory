@@ -6,13 +6,13 @@ using SmartFactoryApplication.Utils;
 namespace SmartFactoryApi.Controllers.Inventory
 {
     [ApiController]
-    [Route("inventory/[controller]/v1")]
+    [Route("inventory/v1/[controller]")]
     public class ProductController(IProductService productService) : ControllerBase
     {
         private readonly IProductService _productService = productService;
 
         [HttpGet]
-        public async Task<IActionResult> GetAsync()
+        public async Task<IActionResult> GetAllAsync()
         {
             try
             {
@@ -21,12 +21,12 @@ namespace SmartFactoryApi.Controllers.Inventory
             }
             catch (Exception)
             {
-                return StatusCode((int)HttpStatusCodes.INTERNAL_SERVER_ERROR);
+                return StatusCode((int)HttpStatusCodes.INTERNAL_SERVER_ERROR, "Error: [GET]");
             }
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateAsync(ProductModel model)
+        public async Task<IActionResult> CreateAsync([FromBody] ProductModel model)
         {
             try
             {
@@ -36,24 +36,46 @@ namespace SmartFactoryApi.Controllers.Inventory
             }
             catch (Exception)
             {
-                return StatusCode((int)HttpStatusCodes.INTERNAL_SERVER_ERROR);
+                return StatusCode((int)HttpStatusCodes.INTERNAL_SERVER_ERROR, "Error: [POST]");
             }
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateAsync(ProductModel model)
+        public async Task<IActionResult> UpdateAsync([FromBody] ProductModel model)
         {
-            return StatusCode((int)HttpStatusCodes.INTERNAL_SERVER_ERROR, "Not implemented [UPDATE]");
+            try
+            {
+                var response = await _productService.UpdateProductAsync(model);
+                if (!response.IsValid)
+                    return StatusCode((int)response.StatusCode, response.Errors);
+
+                return StatusCode((int)response.StatusCode, response.Data);
+            }
+            catch (Exception)
+            {
+                return StatusCode((int)HttpStatusCodes.INTERNAL_SERVER_ERROR, "Error: [PUT]");
+            }
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteAsync(int id)
+        public async Task<IActionResult> DeleteAsync([FromRoute] int id)
         {
-            return StatusCode((int)HttpStatusCodes.INTERNAL_SERVER_ERROR, "Not implemented [DELETE]");
+            try
+            {
+                var response = await _productService.DeleteProductAsync(id);
+                if (!response.IsValid)
+                    return StatusCode((int)response.StatusCode, response.Errors);
+
+                return StatusCode((int)response.StatusCode, response.Data);
+            }
+            catch (Exception)
+            {
+                return StatusCode((int)HttpStatusCodes.INTERNAL_SERVER_ERROR, "Error: [DELETE]");
+            }
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetAsync(int id)
+        public async Task<IActionResult> GetAsync([FromRoute] int id)
         {
             try
             {
@@ -63,9 +85,8 @@ namespace SmartFactoryApi.Controllers.Inventory
             }
             catch (Exception)
             {
-                return StatusCode((int)HttpStatusCodes.INTERNAL_SERVER_ERROR);
+                return StatusCode((int)HttpStatusCodes.INTERNAL_SERVER_ERROR, "Error: [GET]");
             }
-
         }
     }
 }
